@@ -35,17 +35,26 @@ driver.get("https://www.meesho.com/")
 time.sleep(random.uniform(3, 5))  # Random delay
 
 def meesho_automation(name, contact_Number, house_no, pincode, city, state):
-
+    """
+    Automate the process of adding products to cart, checking out, and placing an order on Meesho.com.
+    
+    Args:
+        name (str): Customer name.
+        contact_Number (str): Customer contact number.
+        house_no (str): House number.
+        pincode (str): Pincode.
+        city (str): City.
+        state (str): State.
+    """
+    # Add products to cart
     for product in Product:
         search_input = driver.find_element(By.XPATH, "//input[@placeholder='Try Saree, Kurti or Search by Product Code']")
-        # search_input.send_keys(product_name)
         search_input.clear()
         for digit in product:
             search_input.send_keys(digit)
             time.sleep(random.uniform(0.1, 0.3))
         search_input.send_keys(Keys.RETURN)
         time.sleep(5)
-        # Wait for search results and click on the first product
         first_product = WebDriverWait(driver, 10).until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, "div[class*='ProductList__GridCol']"))
         )
@@ -56,11 +65,13 @@ def meesho_automation(name, contact_Number, house_no, pincode, city, state):
         )
         add_to_cart_button.click()
 
+    # Proceed to cart
     cart_button = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.XPATH, "//span[text()='Cart']"))
     )
     cart_button.click()
 
+    # Proceed to checkout
     buy_now_button = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.XPATH, "//span[text()='Continue']"))
     )
@@ -73,6 +84,7 @@ def meesho_automation(name, contact_Number, house_no, pincode, city, state):
 
     time.sleep(1)
 
+    # Enter address details
     Name = driver.find_element(By.XPATH, "//input[@id='name']")
     Name.send_keys(name)
     Name.send_keys(Keys.RETURN)
@@ -99,7 +111,7 @@ def meesho_automation(name, contact_Number, house_no, pincode, city, state):
 
 
 
-    # Wait for the dropdown options to appear
+    # Select state
     state_input = driver.find_element(By.ID, "state")  # Adjust the selector as needed
 
     # Click on the state input to open the dropdown
@@ -111,6 +123,15 @@ def meesho_automation(name, contact_Number, house_no, pincode, city, state):
 
     # Function to find and click a state
     def select_state(state_name):
+        """
+        Find and click a state from the dropdown.
+        
+        Args:
+            state_name (str): Name of the state to select.
+        
+        Returns:
+            bool: True if the state was successfully selected, False otherwise.
+        """
         state_elements = dropdown.find_elements(By.CSS_SELECTOR, "div.sc-iBPTVF.ddDdMx")
         for element in state_elements:
             if element.text.strip() == state_name:
@@ -131,6 +152,7 @@ def meesho_automation(name, contact_Number, house_no, pincode, city, state):
 
     time.sleep(2)
     
+    # Select address
     address_containers = WebDriverWait(driver, 10).until(
                 EC.presence_of_all_elements_located((By.CSS_SELECTOR, "div.sc-iBPTVF.bRcHgY"))
     )
@@ -166,11 +188,13 @@ def meesho_automation(name, contact_Number, house_no, pincode, city, state):
         except:
             print("Could not find or click the confirmation button")
 
+    # Proceed to payment
     Payment_Method = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.XPATH, "//span[text()='Continue']"))
     )
     Payment_Method.click()
 
+    # Place order
     Place_Order = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.XPATH, "//span[text()='Place Order']"))
     )
@@ -178,6 +202,7 @@ def meesho_automation(name, contact_Number, house_no, pincode, city, state):
 
     time.sleep(1)
 
+    # Continue shopping
     Place_Order = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.XPATH, "//span[text()='Continue Shopping']"))
     )
@@ -186,6 +211,7 @@ def meesho_automation(name, contact_Number, house_no, pincode, city, state):
 
 
     time.sleep(1) 
+<|endoftext|>
 
 
 # Read the Excel file
